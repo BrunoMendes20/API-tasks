@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api\v1;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\Auth\LoginRequest;
@@ -10,6 +10,7 @@ use App\Services\ApiResponse;
 use App\Http\Requests\Api\V1\Auth\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -23,7 +24,7 @@ class AuthController extends Controller
 
         $user = $request->user();
 
-        $token = $user->createToken('api-token')->plainTextToken;
+        $token = $user->createToken('auth-api')->plainTextToken;
 
         return ApiResponse::success([
             'token' => $token,
@@ -36,10 +37,10 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => hash::make($request->password),
         ]);
 
-        $token = $user->createToken('api-token')->plainTextToken;
+        $token = $user->createToken('auth-api')->plainTextToken;
 
         return ApiResponse::success([
             'token' => $token,
@@ -51,6 +52,6 @@ class AuthController extends Controller
     {
         $request->user()->tokens()->delete();
 
-        return ApiResponse::success('Logout realizado com sucesso');
+        return response()->noContent();
     }
 }
