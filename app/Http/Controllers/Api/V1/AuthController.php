@@ -7,10 +7,7 @@ use App\Http\Requests\Api\V1\Auth\LoginRequest;
 use App\Http\Resources\Api\V1\UserResource;
 use Illuminate\Support\Facades\Auth;
 use App\Services\ApiResponse;
-use App\Http\Requests\Api\V1\Auth\RegisterRequest;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -32,21 +29,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function register(RegisterRequest $request)
-    {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => hash::make($request->password),
-        ]);
 
-        $token = $user->createToken('auth-api')->plainTextToken;
-
-        return ApiResponse::success([
-            'token' => $token,
-            'user' => new UserResource($user),
-        ], 201);
-    }
 
     public function logout(Request $request)
     {
