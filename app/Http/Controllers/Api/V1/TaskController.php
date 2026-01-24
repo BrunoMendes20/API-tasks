@@ -31,7 +31,7 @@ class TaskController extends Controller
 
         return ApiResponse::success(
             new TaskResource($task),
-            'Task created successfully',
+            'Tarefa criada com sucesso',
             201
         );
     }
@@ -58,6 +58,6 @@ class TaskController extends Controller
 
         $task->delete();
 
-        return ApiResponse::success('Task deleted successfully');
+        return ApiResponse::success('Tarefa deletada com sucesso');
     }
 }
