@@ -45,3 +45,11 @@ function something()
 {
     // ..
 }
+
+/**
+ * Clears the guard cache to force token revalidation in tests.
+ */
+function resetAuthCache()
+{
+    auth()->forgetGuards();
+}
