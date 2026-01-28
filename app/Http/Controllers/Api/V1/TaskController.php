@@ -54,10 +54,12 @@ class TaskController extends Controller
 
     public function destroy(Task $task)
     {
-        $this->authorize('delete', $task);
+        if ($task->user_id !== auth()->id()) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
 
         $task->delete();
 
-        return ApiResponse::success('Tarefa deletada com sucesso');
+        return response()->noContent();
     }
 }
