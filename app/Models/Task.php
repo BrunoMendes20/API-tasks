@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Task extends Model
 {
     // Enables soft delete functionality (records are not permanently removed)
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     /**
      * The attributes that are mass assignable.
