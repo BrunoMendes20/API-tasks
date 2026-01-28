@@ -60,7 +60,6 @@ it('cannot update task without authentication', function () {
         'user_id' => $user->id,
     ]);
 
-
     $response = $this->putJson("/api/V1/tasks/{$task->id}", [
         'title' => 'Novo título',
     ]);
@@ -92,5 +91,6 @@ it('returns 404 when updating non existing task', function () {
         'title' => 'Qualquer coisa',
 
     ]);
+
     $response->assertStatus(404);
 });

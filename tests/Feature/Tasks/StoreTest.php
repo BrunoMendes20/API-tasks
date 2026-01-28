@@ -18,7 +18,6 @@ it('can create task', function () {
 
     $response = $this->postJson('api/V1/tasks', $payload);
 
-
     $response->assertStatus(201)->assertJsonFragment([
         'title' => 'Nova tarefa',
     ]);

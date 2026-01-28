@@ -24,8 +24,6 @@ it('can show task', function () {
     ]);
 });
 
-
-
 it('cannot show another users task', function () {
     $userA = User::factory()->create();
     $userB = User::factory()->create();

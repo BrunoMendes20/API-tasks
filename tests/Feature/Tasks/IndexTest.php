@@ -26,7 +26,6 @@ it('cannot list tasks without authentication', function () {
     $response->assertStatus(401);
 });
 
-
 it('list only tasks from authenticated user', function () {
     $userA = User::factory()->create();
     $userB = User::factory()->create();

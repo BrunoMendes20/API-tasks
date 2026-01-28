@@ -39,7 +39,6 @@ it('cannot delete another users task', function () {
 
     $reponse->assertStatus(403);
 
-    // Garante que a tarefa NÃO foi deletada
     $this->assertDatabaseHas('tasks', [
         'id' => $task->id,
         'user_id' => $userB->id,
@@ -53,14 +52,12 @@ it('cannot delete task without authentication', function () {
         'user_id' => $user->id,
     ]);
 
-
     $response = $this->deleteJson("/api/V1/tasks/{$task->id}", [
         'title' => 'Novo título',
     ]);
 
     $response->assertStatus(401);
 });
-
 
 it('returns 404 when delete non existing task', function () {
     $user = User::factory()->create();
