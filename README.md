@@ -103,7 +103,7 @@ Antes de iniciar, você precisa ter instalado:
 1. **Clone o repositório:**
 
 ```bash
-git clone https://github.com/seu-usuario/task-api-laravel.git
+git clone https://github.com/BrunoMendes20/API-tasks
 cd task-api-laravel
 composer install
 ```
