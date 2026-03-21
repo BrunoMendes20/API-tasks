@@ -52,6 +52,19 @@ class TaskController extends Controller
         return ApiResponse::success(new TaskResource($task));
     }
 
+    /**
+    * Deletes a task (soft delete).
+    *
+    * Note: This method intentionally does not use $this->authorize() or ApiResponse.
+    *
+    * During development, using $this->authorize('delete', $task) caused an unexpected
+    * exception instead of returning 403, which broke the test assertion (assertStatus(403)).
+    * The manual check was adopted as a pragmatic solution to keep the test aligned
+    * with the expected behavior.
+    *
+    * ApiResponse::success() was also replaced by response()->noContent() to correctly
+    * return HTTP 204, which is the expected status for delete operations with no body.
+    */
     public function destroy(Task $task)
     {
         if ($task->user_id !== auth()->id()) {
