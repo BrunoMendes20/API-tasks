@@ -35,9 +35,9 @@ it('cannot delete another users task', function () {
 
     Sanctum::actingAs($userA);
 
-    $reponse = $this->deleteJson("api/V1/tasks/{$task->id}");
+    $response = $this->deleteJson("api/V1/tasks/{$task->id}");
 
-    $reponse->assertStatus(403);
+    $response->assertStatus(403);
 
     $this->assertDatabaseHas('tasks', [
         'id' => $task->id,
