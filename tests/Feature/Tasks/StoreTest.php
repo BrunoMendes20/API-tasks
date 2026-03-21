@@ -54,7 +54,7 @@ it('cannot create task without title', function () {
 });
 
 
-it('can create always  assigns task to authenticated user', function () {
+it('always assigns task to authenticated user ignoring user_id in payload', function () {
     $user = User::factory()->create();
     Sanctum::actingAs($user);
 
