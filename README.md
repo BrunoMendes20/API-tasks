@@ -80,14 +80,16 @@ php artisan serve
 POST /api/v1/login
 {
     "email": "appconsumer_001@api.com",
-    "password": "Aa123456"
+    "password": 
 }
 ```
+As credenciais de acesso são definidas no seeder. Consulte `database/seeders/DatabaseSeeder.php`.
 
 Use o token retornado no header das requisições protegidas:
-
+```
 Authorization: Bearer {token}
 Accept: application/json
+```
 
 ## Padrão de resposta
 ```json
