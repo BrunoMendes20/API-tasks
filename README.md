@@ -1,229 +1,127 @@
-# Task API - Laravel
+# API Tasks — Laravel REST API
 
 API RESTful para gerenciamento de tarefas, desenvolvida com Laravel e autenticação por token utilizando Laravel Sanctum.
 
-Projeto criado para demonstrar boas práticas de desenvolvimento, segurança e arquitetura pensada para evolução futura.
-
----
-
 ## 🚀 Tecnologias
 
-- **PHP 8.1 ou superior** | **Laravel 12**
-- **Sanctum** (Autenticação Stateless)
-- **MySQL** | **Eloquent ORM**
-- **Pest PHP** (Testes automatizados)
+- PHP 8.1+ | Laravel 12
+- Laravel Sanctum (autenticação stateless)
+- MySQL | Eloquent ORM
+- Pest PHP (testes automatizados)
+- php-cs-fixer (padronização de código)
 
 ---
 
 ## 📦 Funcionalidades
 
-- 🔐 **Autenticação**: Login seguro com geração de tokens.
-- 📋 **CRUD de Tarefas**: Gerenciamento completo (Listar, Criar, Ver, Editar e Deletar).
-- 🛡️ **Privacidade**: Cada usuário visualiza e interage apenas com suas próprias tarefas.
-- 📅 **Soft Deletes**: Exclusão lógica para evitar perda acidental de dados.
-- 🚦 **Versionamento**: API estruturada em `/api/v1`.
+- Autenticação via token com geração e revogação de tokens
+- CRUD completo de tarefas
+- Isolamento de dados por usuário via Policies
+- Soft delete para exclusão lógica
+- Versionamento de rotas em /api/v1
+- Respostas padronizadas via ApiResponse service
 
 ---
 
 ## 🧱 Arquitetura e Padrões
 
-Este projeto foca em código limpo e manutenibilidade:
-
-- **Form Requests**: Validações isoladas da lógica de negócio.
-- **Policies**: Autorização centralizada para garantir a segurança dos dados.
-- **API Resources**: Formatação padronizada de saída dos dados (JSON).
-- **Separation of Concerns**: Controllers magros delegando responsabilidades.
+- Form Requests para validação desacoplada dos controllers
+- Policies para autorização centralizada
+- API Resources para formatação consistente do JSON
+- Controllers magros com responsabilidades únicas
+- ApiResponse service centralizando todos os formatos de resposta
 
 ---
+
+## 📋 Endpoints (v1)
+
+| Método | Endpoint           | Descrição                            | Auth |
+| ------ | ------------------ | ------------------------------------ | ---- |
+| POST   | /api/v1/login      | Login e geração de token             | ❌   |
+| POST   | /api/v1/logout     | Logout e revogação do token          | ✅   |
+| GET    | /api/v1/tasks      | Lista tarefas do usuário autenticado | ✅   |
+| POST   | /api/v1/tasks      | Cria nova tarefa                     | ✅   |
+| GET    | /api/v1/tasks/{id} | Exibe uma tarefa                     | ✅   |
+| PUT    | /api/v1/tasks/{id} | Atualiza tarefa                      | ✅   |
+| DELETE | /api/v1/tasks/{id} | Soft delete de tarefa                | ✅   |
 
 ## 🧪 Testes Automatizados
 
-A API conta com testes de integração (Feature Tests) implementados com Pest, cobrindo autenticação, segurança e regras de negócio.
+Suíte de testes de integração com Pest cobrindo:
 
-### 🔍 Cobertura de Testes
-
-#### 🔐 Autenticação
-
-- Login com credenciais válidas
-- Login com senha ou email inválidos
-- Validação de campos obrigatórios
-- Logout autenticado
-- Logout sem autenticação
-
-#### 🛡️ Segurança
-
-- Rotas protegidas retornam 401 sem token
-- Usuários não acessam recursos de outros usuários (403)
-- Tokens revogados não concedem acesso após logout
+- Login com credenciais válidas e inválidas
+- Logout e revogação de token
+- Rotas protegidas retornando 401 sem token
+- Isolamento entre usuários (403 ao tentar acessar recurso alheio)
+- CRUD completo com cenários de sucesso, validação e not found
+- Verificação de que user_id malicioso no payload é ignorado
 
 ## ℹ️ Nota técnica
 
-Durante os testes de logout, foi necessário lidar com o cache interno do Auth Guard do Laravel.
-Para garantir a revalidação correta do token no mesmo processo de teste, foi criado um helper (resetAuthCache) no Pest.php, responsável por limpar os guards e forçar a autenticação a consultar novamente o banco de dados.
+Durante os testes de logout, foi necessário lidar com o cache interno do Auth Guard do Laravel. Um helper `resetAuthCache` foi criado no `Pest.php` para forçar a revalidação do token no mesmo processo de teste.
 
-### 📋 Tarefas (Tasks)
-
-- Listagem de tarefas do usuário autenticado
-- Criação de tarefa
-- Visualização de tarefa específica
-- Atualização de tarefa
-- Exclusão lógica (soft delete)
-- Tentativas de acesso sem autenticação
-
-## ▶️ Executando os Testes
-
-Para rodar todos os testes:
-
-```bash
-php artisan test
-```
-
-Ou apenas um grupo específico:
-
-```bash
-php artisan test --filter=Task
-php artisan test --filter=Login
-php artisan test --filter=Logout
-```
-
----
-
-## ⚙️ Requisitos
-
-Antes de iniciar, você precisa ter instalado:
-
-- PHP 8.1 ou superior
-- Composer
-- MySQL
-
----
-
-## 🛠️ Como rodar o projeto
-
-1. **Clone o repositório:**
+## ⚙️ Instalação
 
 ```bash
 git clone https://github.com/BrunoMendes20/API-tasks
-cd task-api-laravel
+cd API-tasks
 composer install
-```
-
-2. **Ambiente:**
-
-```bash
 cp .env.example .env
 php artisan key:generate
 ```
 
-Nota: Configure as credenciais do seu banco de dados no arquivo .env.
-
-3. **Banco de Dados & Servidor:**
+Configure o banco de dados no `.env` e execute:
 
 ```bash
 php artisan migrate --seed
 php artisan serve
 ```
 
-API disponível em: http://localhost:8000/api/v1
+## 🔐 Autenticação
 
-## 👤 Usuário de Teste e Autenticação
-
-Após executar as migrations com --seed, utilize as credenciais abaixo para realizar o login:
-
-```json
+```bash
+POST /api/v1/login
 {
     "email": "appconsumer_001@api.com",
-    "password": "Aa123456"
+    "password":
 }
 ```
 
-Login
-POST /api/v1/login
+As credenciais de acesso são definidas no seeder. Consulte `database/seeders/DatabaseSeeder.php`.
 
-Body:
+Use o token retornado no header das requisições protegidas:
 
-Utilize as mesmas credenciais informadas acima.
-
-A resposta conterá o token de acesso, que deve ser utilizado nas rotas protegidas.
-
-Uso do Token
-Authorization: Bearer SEU_TOKEN
+```
+Authorization: Bearer {token}
 Accept: application/json
-
-## 📋 Endpoints Principais (v1)
-
-| Método | Endpoint           | Descrição                | Protegido |
-| ------ | ------------------ | ------------------------ | --------- |
-| GET    | /api/v1/status     | Saúde da API             | ✅        |
-| POST   | /api/v1/login      | Login e geração de token | ❌        |
-| POST   | /api/v1/logout     | Logout                   | ✅        |
-| GET    | /api/v1/tasks      | Lista tarefas do usuário | ✅        |
-| POST   | /api/v1/tasks      | Cria nova tarefa         | ✅        |
-| PUT    | /api/v1/tasks/{id} | Atualiza tarefa          | ✅        |
-| DELETE | /api/v1/tasks/{id} | Soft delete de tarefa    | ✅        |
-
-## 🔐 Exemplo de Autenticação
-
-Faça login para receber o token.
-
-Adicione-o ao Header das requisições protegidas: Authorization: Bearer {token}
+```
 
 ## 📐 Padrão de Resposta
-
-As respostas seguem uma estrutura previsível.
-
-Sucesso (201 Created):
 
 ```json
 {
     "success": true,
-    "message": "Tarefa criada com sucesso",
-    "data": {
-        "id": 1,
-        "title": "Estudar Laravel",
-        "is_done": false
-    }
+    "message": "Operação realizada com sucesso",
+    "data": { ... }
 }
 ```
 
-Erro de Validação (422):
+## ▶️ Executar Testes
 
-```json
-{
-    "success": false,
-    "message": "Erro de validação",
-    "errors": {
-        "title": "O campo título é obrigatório."
-    }
-}
+```bash
+php artisan test
+php artisan test --filter=Task
+php artisan test --filter=Login
 ```
 
-## 🧪 Testes Manuais (Postman)
+## 📌 Sobre o Projeto
 
-Os testes manuais foram utilizados como apoio inicial durante o desenvolvimento.
-
-A API foi validada manualmente utilizando Postman, cobrindo:
-
-- Fluxo completo de autenticação por token
-- Proteção de rotas com auth:sanctum
-- Restrições de acesso entre usuários (Policies)
-
-Respostas para:
-
-- IDs inexistentes (404)
-- Acesso não autorizado (401 / 403)
-- Erros de validação (422)
-
-## 🎯 Objetivo do Projeto
-
-Este projeto foi desenvolvido com fins educacionais e de prática, com foco em:
-
-- Consolidação de boas práticas em APIs com Laravel
-- Uso de autenticação stateless com Sanctum
-- Estruturação de uma API REST moderna
-
-Não se trata de um projeto de produção, mas de uma base de aprendizado que servirá como referência para projetos futuros mais complexos.
+Desenvolvido para prática e estudo de arquitetura REST com Laravel.
+Serve como referência para projetos futuros mais complexos.
 
 ## 👨‍💻 Autor
 
 Bruno Mendes
+
+- [brunomendes.tech](https://brunomendes.tech)
+- [brunomendesteck@gmail.com](mailto:brunomendesteck@gmail.com)
