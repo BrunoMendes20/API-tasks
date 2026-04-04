@@ -33,7 +33,7 @@ API RESTful para gerenciamento de tarefas, desenvolvida com Laravel e autentica�
 
 ---
 
-## Endpoints (v1)
+## 📋 Endpoints (v1)
 
 | Método | Endpoint | Descrição | Auth |
 |--------|----------|-----------|------|
@@ -45,7 +45,7 @@ API RESTful para gerenciamento de tarefas, desenvolvida com Laravel e autentica�
 | PUT | /api/v1/tasks/{id} | Atualiza tarefa | ✅ |
 | DELETE | /api/v1/tasks/{id} | Soft delete de tarefa | ✅ |
 
-## Testes automatizados
+## 🧪 Testes Automatizados
 
 Suíte de testes de integração com Pest cobrindo:
 
@@ -60,7 +60,7 @@ Suíte de testes de integração com Pest cobrindo:
 
 Durante os testes de logout, foi necessário lidar com o cache interno do Auth Guard do Laravel. Um helper `resetAuthCache` foi criado no `Pest.php` para forçar a revalidação do token no mesmo processo de teste.
 
-## Instalação
+## ⚙️ Instalação
 ```bash
 git clone https://github.com/BrunoMendes20/API-tasks
 cd API-tasks
@@ -75,7 +75,7 @@ php artisan migrate --seed
 php artisan serve
 ```
 
-## Autenticação
+## 🔐 Autenticação
 ```bash
 POST /api/v1/login
 {
@@ -91,7 +91,7 @@ Authorization: Bearer {token}
 Accept: application/json
 ```
 
-## Padrão de resposta
+## 📐 Padrão de Resposta
 ```json
 {
     "success": true,
@@ -100,14 +100,14 @@ Accept: application/json
 }
 ```
 
-## Executar testes
+## ▶️ Executar Testes
 ```bash
 php artisan test
 php artisan test --filter=Task
 php artisan test --filter=Login
 ```
 
-## Sobre o projeto
+## 📌 Sobre o Projeto
 
 Desenvolvido para prática e estudo de arquitetura REST com Laravel.
 Serve como referência para projetos futuros mais complexos.
