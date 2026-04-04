@@ -89,6 +89,8 @@ POST /api/v1/login
 
 As credenciais de acesso são definidas no seeder. Consulte `database/seeders/DatabaseSeeder.php`.
 
+As credenciais de acesso são definidas no seeder. Consulte `database/seeders/DatabaseSeeder.php`.
+
 Use o token retornado no header das requisições protegidas:
 
 ```
